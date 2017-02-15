@@ -1,3 +1,18 @@
+/*
+ * To-DO:
+ * Add Submit button logic:
+ * 		*Need to use getText() methods to process recipe text.
+ * 		*Need to implement database logic to store new recipe
+ * 		*Need to switch back OpeningFrame after addition of recipe is complete and need to update table on said frame. 
+ * 
+ * Re-Design the Frame so that it has fields that fit the database schemas
+ * 		*See proposed schema to investigate which attributes need to be added.
+ * 		
+ * John J. Garza
+ * 2/14/2017
+*/
+
+
 package com.big.chew;
 
 import java.awt.BorderLayout;
@@ -15,20 +30,13 @@ import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
-/*
- * To-DO:
- * Add Submit button logic:
- * 		*Need to use getText() methods to process recipe text.
- * 		*Need to implement database logic to store new recipe
- * 		*Need to switch back OpeningFrame after addition of recipe is complete and need to update table on said frame. 
- * 		
- * John J. Garza
- * 2/9/2017
-*/
 
-
-
-
+/**
+ * Class that constructs the JFrame window to add a new recipe to the
+ * recipe database. 
+ * @author johnj
+ *
+ */
 public class Add_New_Recipe extends JFrame {
 	
 	private Font jLabelFont = new Font("Calibri", Font.BOLD, 20);
@@ -42,7 +50,6 @@ public class Add_New_Recipe extends JFrame {
 		this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		this.setSize(1500, 1000);
 		this.setLayout(new BorderLayout());
-		//this.setLayout(new GridBagLayout());
 		
 		JPanel pane = new JPanel(new GridBagLayout());
 		GridBagConstraints gbc = new GridBagConstraints();
@@ -56,8 +63,6 @@ public class Add_New_Recipe extends JFrame {
 		JLabel jlbackgroundImage = new JLabel(iconFood);
 		gbc.gridx = 13;
 		gbc.gridy = 0;
-		//gbc.ipadx = 300;
-		
 		this.add(jlbackgroundImage, BorderLayout.PAGE_START);
 		
 		
@@ -134,8 +139,6 @@ public class Add_New_Recipe extends JFrame {
 		gbc.ipady = 4;
 		gbc.gridx = 7;
 		gbc.gridy = 4;
-		//gbc.anchor = GridBagConstraints.EAST;
-        //gbc.fill = GridBagConstraints.NONE;
 		pane.add(btnCancel, gbc);
 		
 		btnCancel.addActionListener(new ActionListener() {
@@ -145,7 +148,7 @@ public class Add_New_Recipe extends JFrame {
 			}
 		});
 		
-		//gbc.fill = GridBagConstraints.NONE;
+		//Dummy Padding to the left of the variables for appropriate size buttons.
 		gbc.gridwidth = 3;
 		gbc.gridx = 1;
 		gbc.gridy =4;

@@ -1,5 +1,7 @@
 /*
  * TO-DO:
+ * Clean code so the button positions do not require padding. 
+ * 
  * Finish Add_New_Recipe button Logic
  * Implement View Recipe button logic to display desired frame
  * 		*Need to create rough draft of UI then implement it in Java
@@ -13,33 +15,40 @@
  * 		*Brainstorm what items should go in the menu bar and would be beneficial to the application. 
  * 
  * John J. Garza
- * 2/9/2017
+ * 2/14/2017
  */
 
 package com.big.chew;
 
-import java.awt.BorderLayout;
 import java.awt.Dimension;
-import java.awt.FlowLayout;
+import java.awt.Font;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-
-import javax.swing.BorderFactory;
+import java.util.Vector;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
-import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTable;
 import javax.swing.table.DefaultTableCellRenderer;
 import javax.swing.table.DefaultTableModel;
-import javax.swing.UIManager;
 
+/**
+ * Class that generates the first window of the application that generates the
+ * recipe table and buttons to interact with the database.
+ * 
+ * @author johnj
+ *
+ */
 public class OpeningFrame extends JFrame {
 	private static final int PAD = 30;
-	private static final Dimension tableDim = new Dimension(800,500);
-	
+	private static final Dimension TABLE_DIM = new Dimension(800, 500);
+	private static final Font TABLE_FONT = new Font("Arial", Font.BOLD, 18);
+	private static final int TABLE_CELL_HEIGHT = 20;
+
+	public RecipeDB rdb = new RecipeDB();
+
 	private JButton viewRecipe;
 	private JButton addNewRecipe;
 	private JButton editRecipe;
@@ -57,44 +66,11 @@ public class OpeningFrame extends JFrame {
 
 		int shift = 150;
 
-		// Table
-		// Logic---------------------------------------------------------------------------
-		final Class[] columnClass = new Class[] { String.class, String.class, Integer.class};
-		
-		//Currently only holding test values for the table temporarily 
-		String[] columns = new String[] {"Recipe", "Rating", "Date Added"};
-		Object[][] data = new Object[][] {	
-			{"Test" , 1, "1/1/1"},
-			{"Test2", 2, "1/2/1"},
-			{"Test3", 3, "1/2/3"}
-		};
+		table = generateTable();
 
-		// create table model with data
-		model = new DefaultTableModel(data, columns) {
-			@Override
-			public boolean isCellEditable(int row, int column) {
-				return false;
-			}
-			@Override
-			public Class<?> getColumnClass(int columnIndex) {
-				return columnClass[columnIndex];
-			}
-		};
-		
-		table = new JTable(model);
-		
-		DefaultTableCellRenderer leftRenderer = new DefaultTableCellRenderer();
-		leftRenderer.setHorizontalAlignment(JLabel.LEFT);
-		table.getColumnModel().getColumn(0).setCellRenderer(leftRenderer);
-
-		DefaultTableCellRenderer centerRenderer = new DefaultTableCellRenderer();
-		centerRenderer.setHorizontalAlignment(JLabel.CENTER);
-		table.getColumnModel().getColumn(1).setCellRenderer(centerRenderer);
-		table.getColumnModel().getColumn(2).setCellRenderer(centerRenderer);
-		
 		pane = new JScrollPane();
 		pane.setViewportView(table);
-		table.setPreferredSize(tableDim);
+		table.setPreferredSize(TABLE_DIM);
 		pane.setBounds(150, 250, 1200, 500);
 		this.add(pane);
 
@@ -151,6 +127,53 @@ public class OpeningFrame extends JFrame {
 		jlbackgroundImage.setBounds(0, 0, 1500, 1000);
 		this.add(jlbackgroundImage);
 		this.setVisible(true);
+
+	}
+
+	/**
+	 * Method that generates a new default table model and then populates it
+	 * using the RecipeDB.getAllRecipeTableData() method
+	 * 
+	 * @return Recipe Table to be added to the parent object.
+	 * @see RecipeDB
+	 */
+	public JTable generateTable() {
+		final Class[] columnClass = new Class[] { String.class, String.class, Integer.class };
+
+		Vector<String> columns = new Vector<String>(3);
+		columns.add("Recipe");
+		columns.add("Rating");
+		columns.add("Date Added");
+		Vector<Vector<Object>> data = rdb.getAllRecipeTableData();
+
+		// create table model with data
+		model = new DefaultTableModel(data, columns) {
+			@Override
+			public boolean isCellEditable(int row, int column) {
+				return false;
+			}
+
+			@Override
+			public Class<?> getColumnClass(int columnIndex) {
+				return columnClass[columnIndex];
+			}
+		};
+
+		JTable newTable = new JTable(model);
+
+		DefaultTableCellRenderer leftRenderer = new DefaultTableCellRenderer();
+		leftRenderer.setHorizontalAlignment(JLabel.LEFT);
+		newTable.getColumnModel().getColumn(0).setCellRenderer(leftRenderer);
+
+		DefaultTableCellRenderer centerRenderer = new DefaultTableCellRenderer();
+		centerRenderer.setHorizontalAlignment(JLabel.CENTER);
+		newTable.getColumnModel().getColumn(1).setCellRenderer(centerRenderer);
+		newTable.getColumnModel().getColumn(2).setCellRenderer(centerRenderer);
+		newTable.setFont(TABLE_FONT);
+		newTable.setRowHeight(TABLE_CELL_HEIGHT);
+		// newTable.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
+
+		return newTable;
 
 	}
 
