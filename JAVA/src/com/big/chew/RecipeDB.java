@@ -5,12 +5,12 @@
  * 
  * Figure out where to put connection closing statements.
  * 
- * Add logic for certain methods to return an empty method upon failure.
+ * Add logic for certain methods to return an empty query upon failure.
  *
  * Work on Exception handling. 
  * 
  * John J. Garza
- * 2/14/2017
+ * 2/16/2017
  *  
  */
 
@@ -22,6 +22,10 @@ import java.sql.ResultSet;
 import java.sql.ResultSetMetaData;
 import java.sql.SQLException;
 import java.sql.Statement;
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
+import java.util.ArrayList;
+import java.util.Date;
 import java.util.Vector;
 
 /**
@@ -55,8 +59,7 @@ public class RecipeDB {
 		}
 
 		try {
-			conn = DriverManager.getConnection(JDBC_URL);
-
+			conn = DriverManager.getConnection(JDBC_URL);			
 		} catch (SQLException e) {
 			e.printStackTrace();
 		}
@@ -85,9 +88,7 @@ public class RecipeDB {
 				}
 				data.add(rowVector);
 			}
-
 			return data;
-
 		} catch (SQLException e) {
 			e.printStackTrace();
 		}
@@ -95,4 +96,83 @@ public class RecipeDB {
 		// Return Empty Table?
 		return null;
 	}
+
+
+	/**
+	 * Class Method that adds a new recipe to the recipe database. 
+	 * 
+	 * Recipe ID and date are determined inside the class and are not included as parameters. 
+	 * 
+	 * @param recipeName
+	 * @param recipeRating
+	 * @param recipeDescription
+	 * @param recipeNotes
+	 * @param recipeIngredients
+	 * @param ingredientAmounts
+	 * @param recipe_instructions
+	 * 
+	 * @author John J. Garza
+	 */
+	public void addNewRecipe(String recipeName, String recipeRating, String recipeDescription, String recipeNotes,
+			ArrayList<String> recipeIngredients, ArrayList<String> ingredientAmounts, ArrayList<String> recipe_instructions) {
+		try {
+			DateFormat sdf = new SimpleDateFormat("MM/dd/yyyy");
+			Date date = new Date();
+			Statement statement = conn.createStatement();
+			ResultSet resultSet = statement.executeQuery("Select max(cast(recipe_id As integer)) From recipes");
+			resultSet.next();
+			Integer id;
+			if(resultSet.getString(1) == null)
+				id = 1;
+			else
+				id = Integer.parseInt(resultSet.getString(1)) + 1;
+			
+			//Insert into the recipes relation
+			conn.createStatement().execute(
+					"insert into recipes values("
+					+ "'" + String.valueOf(id) + "',"		//recipe_id
+					+ "'" + recipeName + "',"				//recipe_name
+					+ "'" + recipeDescription + "',"		//recipe_description
+					+ "'" + recipeRating + "',"				//recipe_rating
+					+ "'" + recipeNotes + "',"				//recipe_notes
+					+ "'" + sdf.format(date) + "'"			//date_added
+					+ ")"
+					);
+			
+			//Insert into the ingredients relation
+			for(int i = 0; i < recipeIngredients.size() ; i++){
+				conn.createStatement().execute(
+						"insert into ingredients values("
+						+ "'" + String.valueOf(id) + "',"			//recipe_id
+						+ "'" + recipeIngredients.get(i) + "',"		//ingredient_name
+						+ "'" + ingredientAmounts.get(i) + "'"		//amount
+						+ ")"
+						);
+			}
+			
+			//Insert into the recipe_steps relation
+			for(int i = 0; i < recipe_instructions.size(); i++){
+				conn.createStatement().execute(
+						"insert into recipe_steps values("
+						+ "'" + String.valueOf(id) + "',"			//recipe_id
+						+ "'" + String.valueOf(i + 1) + "',"		//step_number
+						+ "'" + recipe_instructions.get(i) + "'"	//instruction
+						+ ")"
+						);
+			}
+			
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+	}
+
+	public void deleteRecipe() {
+		//Delete recipe code...
+	}
+
+	public void getRecipe() {
+		//Get Recipe Code...
+	}
+
 }

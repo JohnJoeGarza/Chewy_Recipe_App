@@ -1,8 +1,8 @@
 /*
  * TO-DO:
- * Clean code so the button positions do not require padding. 
  * 
  * Finish Add_New_Recipe button Logic
+ * 		*Tentative 
  * Implement View Recipe button logic to display desired frame
  * 		*Need to create rough draft of UI then implement it in Java
  * Implement Edit Recipe button logic to display desired frame
@@ -11,7 +11,7 @@
  * 		*Need to create rough draft of UI then implement it in Java. 
  * Implement Delete recipe button logic to display desired frame
  * 		*Need to create rough draft of UI then implement it in Java.
- * Create Menu system for the app.
+ * Create Menu system for the application.
  * 		*Brainstorm what items should go in the menu bar and would be beneficial to the application. 
  * 
  * John J. Garza
@@ -38,7 +38,7 @@ import javax.swing.table.DefaultTableModel;
  * Class that generates the first window of the application that generates the
  * recipe table and buttons to interact with the database.
  * 
- * @author johnj
+ * @author John J. Garza
  *
  */
 public class OpeningFrame extends JFrame {
@@ -47,7 +47,7 @@ public class OpeningFrame extends JFrame {
 	private static final Font TABLE_FONT = new Font("Arial", Font.BOLD, 18);
 	private static final int TABLE_CELL_HEIGHT = 20;
 
-	public RecipeDB rdb = new RecipeDB();
+	private RecipeDB rdb = new RecipeDB();
 
 	private JButton viewRecipe;
 	private JButton addNewRecipe;
@@ -64,8 +64,6 @@ public class OpeningFrame extends JFrame {
 		this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		this.setSize(1500, 1000);
 
-		int shift = 150;
-
 		table = generateTable();
 
 		pane = new JScrollPane();
@@ -76,7 +74,7 @@ public class OpeningFrame extends JFrame {
 
 		// Setting up buttons to interact with the data
 		viewRecipe = new JButton("View Recipe");
-		viewRecipe.setBounds(200 + shift, 760, 150, 25);
+		viewRecipe.setBounds(350, 760, 150, 25);
 		this.add(viewRecipe);
 		viewRecipe.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent event) {
@@ -85,17 +83,18 @@ public class OpeningFrame extends JFrame {
 		});
 
 		addNewRecipe = new JButton("Add New Recipe");
-		addNewRecipe.setBounds(360 + shift, 760, 150, 25);
+		addNewRecipe.setBounds(510, 760, 150, 25);
 		this.add(addNewRecipe);
 		addNewRecipe.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent event) {
-				Add_New_Recipe addNewRecipeFrame = new Add_New_Recipe(OpeningFrame.this);
-				dispose();
+				Add_New_Recipe addNewRecipeFrame = new Add_New_Recipe(OpeningFrame.this, rdb);
+				addNewRecipeFrame.getUI(true);
+				OpeningFrame.this.getUI(false);
 			}
 		});
 
 		editRecipe = new JButton("Edit Recipe");
-		editRecipe.setBounds(520 + shift, 760, 150, 25);
+		editRecipe.setBounds(670, 760, 150, 25);
 		this.add(editRecipe);
 		editRecipe.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent event) {
@@ -104,7 +103,7 @@ public class OpeningFrame extends JFrame {
 		});
 
 		searchRecipe = new JButton("Search Recipes");
-		searchRecipe.setBounds(680 + shift, 760, 150, 25);
+		searchRecipe.setBounds(830, 760, 150, 25);
 		this.add(searchRecipe);
 		searchRecipe.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent event) {
@@ -113,7 +112,7 @@ public class OpeningFrame extends JFrame {
 		});
 
 		deleteRecipe = new JButton("Delete Recipe");
-		deleteRecipe.setBounds(840 + shift, 760, 150, 25);
+		deleteRecipe.setBounds(990, 760, 150, 25);
 		this.add(deleteRecipe);
 		deleteRecipe.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent event) {
@@ -126,8 +125,6 @@ public class OpeningFrame extends JFrame {
 		JLabel jlbackgroundImage = new JLabel(iconFood);
 		jlbackgroundImage.setBounds(0, 0, 1500, 1000);
 		this.add(jlbackgroundImage);
-		this.setVisible(true);
-
 	}
 
 	/**
@@ -171,10 +168,18 @@ public class OpeningFrame extends JFrame {
 		newTable.getColumnModel().getColumn(2).setCellRenderer(centerRenderer);
 		newTable.setFont(TABLE_FONT);
 		newTable.setRowHeight(TABLE_CELL_HEIGHT);
-		// newTable.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
 
 		return newTable;
 
+	}
+	
+	public void updateTable(){
+		table = generateTable();
+		pane.setViewportView(table);
+	}
+	
+	public void getUI(boolean visable){
+		this.setVisible(visable);
 	}
 
 }
