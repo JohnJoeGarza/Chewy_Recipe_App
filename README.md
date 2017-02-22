@@ -22,7 +22,7 @@ The Add New Recipe Window provides the user with fields that they may enter the 
 * **Recipe Rating**: Provided is a scale of 1 to 5 number system in which a user can rate their recipes
 * **Ingredients/Amount**: Ingredient to the recipe and the amount of certain ingredient are added one by one to the list using the 'Add' Button. 
 * **Instruction**: Similar to ingredients/amount, instructions are added one by one using the 'Add' button.
-* Recipe Notes: Any additional information that could be included with the recipe such as cooking tips or food pairing.
+* **Recipe Notes**: Any additional information that could be included with the recipe such as cooking tips or food pairing.
 
 Work still in progress as of 2/21/2017
 
