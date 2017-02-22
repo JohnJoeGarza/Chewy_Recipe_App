@@ -16,6 +16,7 @@
 
 package com.big.chew;
 
+import java.awt.Toolkit;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.ResultSet;
@@ -27,6 +28,8 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.Vector;
+
+import javax.swing.JOptionPane;
 
 /**
  * Class that is used to handle different query operations that are used on the
@@ -60,9 +63,38 @@ public class RecipeDB {
 
 		try {
 			conn = DriverManager.getConnection(JDBC_URL);			
+			conn.createStatement().execute("CREATE TABLE recipes("
+					+ "recipe_id 		varchar(6),"
+					+ "recipe_name		varchar(50),"
+					+ "recipe_description 	varchar(100),"
+					+ "recipe_rating		varchar(1),"
+					+ "recipe_notes		varchar(500),"
+					+ "date_added		date,"
+					+ "PRIMARY KEY (recipe_id))"
+					);
+			
+			conn.createStatement().execute("CREATE TABLE ingredients ("
+					+ "recipe_id varchar(6) references recipes(recipe_id),"
+					+ "ingredient_name varchar(50), "
+					+ "amount varchar(30),"
+					+ "PRIMARY KEY (recipe_id, ingredient_name) ON DELETE CASCADE)"
+					);
+			
+			conn.createStatement().execute("CREATE TABLE recipe_steps ("
+					+ "recipe_id 		varchar(6) references recipes(recipe_id),"
+					+ "step_number 		varchar(3),"
+					+ "instruction 		varchar(500),"
+					+ "PRIMARY KEY (recipe_id, step_number) ON DELETE CASCADE)"
+					);
+			
 		} catch (SQLException e) {
-			e.printStackTrace();
+			//e.printStackTrace();
+			if(e.getSQLState().equalsIgnoreCase("X0Y32"))
+				return;
 		}
+		
+		
+		
 	}
 
 	/**
@@ -162,7 +194,7 @@ public class RecipeDB {
 			}
 			
 		} catch (SQLException e) {
-			// TODO Auto-generated catch block
+			Toolkit.getDefaultToolkit().beep();
 			e.printStackTrace();
 		}
 	}
