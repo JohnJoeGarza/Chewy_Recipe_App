@@ -1,4 +1,4 @@
-# Chewy_Recipe_App
+# Chewy Recipe App
 ### About the app
 The Chewy Recipe App is an application that is used to store cooking recipes into a database so that they may be accessed with ease. The underlying puprpose is to replace index cards, recipe books, or other physical means of keeping 
 
