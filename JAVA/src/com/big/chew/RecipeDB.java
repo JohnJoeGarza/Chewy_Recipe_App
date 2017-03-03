@@ -40,12 +40,32 @@ import javax.swing.JOptionPane;
  *
  */
 public class RecipeDB {
-	public static final String DRIVER = "org.apache.derby.jdbc.EmbeddedDriver";
-	public static final String JDBC_URL = "jdbc:derby:chewyrecipes;create=true";
+	//If embedded DB was desired. 
+//	public static final String DRIVER = "org.apache.derby.jdbc.EmbeddedDriver";
+//	public static final String JDBC_URL = "jdbc:derby:chewyrecipes;create=true";
+	public static final String CLIENT_DRIVER = "org.apache.derby.jdbc.ClientDriver";
+	public static final String JDBC_URL = "jdbc:derby://localhost:1527/chewyrecipes;create=true";
 	public static final String SQL_DATA_FOR_JTABLE_STATMENT = "SELECT recipe_name, recipe_rating, date_added FROM recipes";
 
-	private Connection conn;
+	private Connection conn = null;
+	
 
+//	/*
+//	 * The method creates a Connection object. Loads the client driver,
+//	 * starts and connects to the database using the connection URL.
+//	 */
+//	public static Connection createDatabaseConnection()
+//	        throws SQLException, ClassNotFoundException {
+//	    String driver = "org.apache.derby.jdbc.ClientDriver";
+//	    Class.forName(driver);
+//	    String url = "jdbc:derby://localhost:1527/chewyrecipes";
+//	    Connection c = DriverManager.getConnection(url);
+//	    return c;
+//	}
+
+	
+	
+	
 	/**
 	 * Constructs a RecipeDB object that will connect to the recipe database via
 	 * DriverManager and Connection
@@ -56,7 +76,7 @@ public class RecipeDB {
 	 */
 	public RecipeDB() {
 		try {
-			Class.forName(DRIVER);
+			Class.forName(CLIENT_DRIVER);
 		} catch (ClassNotFoundException e1) {
 			e1.printStackTrace();
 		}
@@ -86,12 +106,11 @@ public class RecipeDB {
 					+ "instruction 		varchar(500),"
 					+ "PRIMARY KEY (recipe_id, step_number) ON DELETE CASCADE)"
 					);
-			
 		} catch (SQLException e) {
-			//e.printStackTrace();
+			System.out.println("Exception Caught");
 			if(e.getSQLState().equalsIgnoreCase("X0Y32"))
 				return;
-		}
+		} 
 		
 		
 		
