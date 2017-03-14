@@ -4,7 +4,7 @@ The Chewy Recipe App is an application that is used to store cooking recipes int
 
 ### About the GUI
 #### Main Window
- ![alt-text] (https://github.com/JohnJoeGarza/Chewy_Recipe_App/blob/master/Design_Elements/Main_Window.JPG)
+ ![alt-text](https://github.com/JohnJoeGarza/Chewy_Recipe_App/blob/master/Design_Elements/Main_Window.JPG)
 
 The main window of the application shows the user a table that contains all the current recipes that are in the database. There are buttons that provide interaction with the database which are:
 * **View Recipe**: Used to open a window that relevent recipe information of the selected recipe.
@@ -14,7 +14,7 @@ The main window of the application shows the user a table that contains all the 
 * **Delete Recipe**: Used to delete the current selected recipe.
 
 #### Add New Recipe
- ![alt-text] (https://github.com/JohnJoeGarza/Chewy_Recipe_App/blob/master/Design_Elements/Add_New_Recipe_Application_GUI.JPG)
+ ![alt-text](https://github.com/JohnJoeGarza/Chewy_Recipe_App/blob/master/Design_Elements/Add_New_Recipe_Application_GUI.JPG)
 
 The Add New Recipe Window provides the user with fields that they may enter the desired information about the recipe that they are trying to store. Given fields are:
 * **Recipe Name**: A field for what the recipe should be stored as.
